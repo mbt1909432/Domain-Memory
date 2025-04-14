@@ -1,0 +1,20 @@
+# 忽略所有的临时文件和目录
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+*.tmp
+*.temp
+
+# 忽略版本控制文件
+.git
+.gitignore
+
+# 忽略其他不必要的文件
+node_modules/
+dist/
+build/
+data/docker_compose/db

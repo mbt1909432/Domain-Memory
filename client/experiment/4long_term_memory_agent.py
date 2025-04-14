@@ -1,0 +1,222 @@
+import json
+import re
+import os
+from datetime import datetime
+from openai import OpenAI
+import pandas as pd
+
+# API 配置
+OLLAMA_BASE_URL = "xxxxx/v1"  # Ollama 的 OpenAI 兼容端点
+OLLAMA_MODEL_NAME = "gemma3:4b"
+
+def load_memory_from_csv(csv_path):
+    """
+    从CSV文件加载记忆数据并生成系统提示
+
+    参数:
+        csv_path (str): CSV文件路径
+
+    返回:
+        str: 系统提示信息
+    """
+    try:
+        # 读取CSV文件
+        df = pd.read_csv(csv_path)
+        
+        # 构建系统提示
+        system_prompt = "你是一个有帮助的AI助手。以下是关于用户的记忆信息：\n\n"
+        
+        # 按domain分组处理数据
+        for domain, group in df.groupby('domain'):
+            system_prompt += f"\n{domain}领域：\n"
+            for _, row in group.iterrows():
+                system_prompt += f"- {row['attribute']}: {row['description']}\n"
+        
+        return system_prompt
+    except Exception as e:
+        print(f"加载记忆文件时出错: {str(e)}")
+        return "你是一个有帮助的AI助手。"
+
+def call_ollama(messages, model=OLLAMA_MODEL_NAME, temperature=0.7, system_prompt=None, max_tokens=None):
+    """
+    调用 Ollama API 进行对话
+
+    参数:
+        messages (list): 对话消息列表
+        model (str): 使用的模型名称
+        temperature (float): 温度参数，控制随机性
+        system_prompt (str): 系统提示信息
+        max_tokens (int): 生成的最大token数
+
+    返回:
+        str: 模型的回复内容
+    """
+    try:
+        client = OpenAI(
+            base_url=OLLAMA_BASE_URL,
+            api_key="ollama"  # 任意字符串即可（除非设置了认证）
+        )
+
+        # 如果有系统提示，添加到消息列表开头
+        if system_prompt:
+            messages = [{"role": "system", "content": system_prompt}] + messages
+
+        # 准备请求参数
+        request_params = {
+            "model": model,
+            "messages": messages,
+            "temperature": temperature
+        }
+
+        # 如果指定了最大token数
+        if max_tokens:
+            request_params["max_tokens"] = max_tokens
+
+        # 调用API
+        response = client.chat.completions.create(**request_params)
+        return response.choices[0].message.content
+
+    except Exception as e:
+        print(f"调用 Ollama API 时出错: {str(e)}")
+        return f"Error: {str(e)}"
+
+
+
+def load_conversation(file_path):
+    """
+    从JSON文件加载对话历史
+
+    参数:
+        file_path (str): JSON文件路径
+
+    返回:
+        list: 对话消息列表
+    """
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"加载对话文件时出错: {str(e)}")
+        return []
+
+def append_conversation_sample(conversation):
+
+    with  open('noise_cleaned.txt','r',encoding='utf-8') as file:
+        for index,data in enumerate(file):
+
+            if data.strip() and index<0:  # 如果去除空白字符后不为空
+                conversation.append(conversation_format(data.strip()))
+
+
+    conversation.append(conversation_format("我练习篮球多久了？"))
+def conversation_format(data):
+    return {'role': 'user', 'content': f'[2025/03/26] {data}'}
+
+
+def save_conversation_result(original_messages, responses, output_file, system_prompt=None):
+    """
+    保存对话结果到JSON文件
+
+    参数:
+        original_messages (list): 原始对话消息
+        responses (list): 模型的回复列表
+        output_file (str): 输出文件路径
+        system_prompt (str): 系统提示信息
+    """
+    # 创建完整对话列表，交替包含用户消息和助手回复
+    full_conversation = []
+    
+    # 如果有系统提示，添加到对话开头
+    if system_prompt:
+        full_conversation.append({
+            "role": "system",
+            "content": system_prompt
+        })
+    
+    # 添加用户消息和助手回复
+    for i, msg in enumerate(original_messages):
+        full_conversation.append(msg)  # 添加用户消息
+        if i < len(responses):
+            full_conversation.append({
+                "role": "assistant",
+                "content": responses[i]
+            })  # 添加助手回复
+
+    # 确保输出目录存在
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
+    # 保存到文件
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(full_conversation, f, ensure_ascii=False, indent=2)
+
+    print(f"对话结果已保存到: {output_file}")
+
+
+def main():
+    # 配置文件路径
+    input_file = "haystack/haystack_with_needle_at_10.json"
+    number="3"
+    memory_file = f"memory/{number}.csv"
+    output_file = f"conversation_result/with_memory/gemma3_4b_conversation_result_haystack/gemma3_4b_conversation_result_{number}.json"
+
+    # 模型设置
+    model = OLLAMA_MODEL_NAME
+    temperature = 0.7  # 可调整的温度参数
+    system_prompt = load_memory_from_csv(memory_file)  # 从CSV加载记忆作为系统提示
+    print(system_prompt)
+    max_tokens = 1000  # 可设置的最大生成token数
+
+    # 加载对话历史
+    conversation = load_conversation(input_file)
+    if not conversation:
+        print("无法加载对话历史，程序退出。")
+        return
+
+    append_conversation_sample(conversation)
+    print(f"已加载 {len(conversation)} 条对话消息")
+
+    # 创建消息列表
+    formatted_messages = []
+    for msg in conversation:
+        # 确保消息格式正确
+        if "role" in msg and "content" in msg:
+            formatted_messages.append({
+                "role": msg["role"],
+                "content": msg["content"]
+            })
+
+    current_context=[]
+    # 存储模型回复
+    responses = []
+
+    # 逐条处理用户消息，获取模型回复
+    for i, msg in enumerate(formatted_messages):
+        print(f"\n处理消息 {i + 1}/{len(formatted_messages)}:")
+        print(f"用户: {msg['content'][:50]}..." if len(msg['content']) > 50 else f"用户: {msg['content']}")
+
+        # #加入用户上下文
+        current_context.append(msg)
+        print("------------")
+        print(current_context)
+
+        # 调用 API
+        response = call_ollama(
+                current_context,
+                model=model,
+                temperature=temperature,
+                system_prompt=system_prompt,
+                max_tokens=max_tokens
+            )
+        #加入AI上下文
+        current_context.append({"role":"assistant","content":response})
+
+        responses.append(response)
+
+        print(f"助手: {response[:50]}..." if len(response) > 50 else f"助手: {response}")
+
+    # 保存对话结果，包含系统提示
+    save_conversation_result(conversation, responses, output_file, system_prompt)
+
+
+if __name__ == "__main__":
+    main()

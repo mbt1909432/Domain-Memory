@@ -1,0 +1,122 @@
+{
+    "code": 1,
+    "msg": "success",
+    "data": {
+        "extracted_profiles": {
+            "facts": [
+                {
+                    "domain": "interest",
+                    "attribute": "movies",
+                    "description": "likes classic old movies, suspense thrillers, and nature-related documentaries"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "magazines",
+                    "description": "likes National Geographic magazine"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "music",
+                    "description": "prefers instrumental music (e.g., Yanni's works) over songs"
+                },
+                {
+                    "domain": "psychological",
+                    "attribute": "emotional_response",
+                    "description": "pauses watching movies/TV shows when emotions become too intense"
+                },
+                {
+                    "domain": "psychological",
+                    "attribute": "beliefs",
+                    "description": "believes instrumental music has a magical power to induce calm and deep states"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "technology",
+                    "description": "interested in image processing with Python"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "photography",
+                    "description": "curious about differences between iPhone and DSLR camera effects"
+                }
+            ]
+        },
+        "updates": [
+            {
+                "action": "MERGE",
+                "description": "Likes sci-fi movies (e.g. The Matrix), classic old movies, suspense thrillers, and nature-related documentaries. Interested in writing movie reviews and sharing opinions.",
+                "domain": "interest",
+                "attribute": "movies"
+            },
+            {
+                "action": "MERGE",
+                "description": "plays guzheng and prefers instrumental music (e.g., Yanni's works) over songs",
+                "domain": "interest",
+                "attribute": "music"
+            },
+            {
+                "action": "MERGE",
+                "description": "Deeply moved and healed by abstract metaphors in animated films, but pauses watching movies/TV shows when emotions become too intense",
+                "domain": "psychological",
+                "attribute": "emotional_response"
+            }
+        ],
+        "organized_profiles": {
+            "facts": [
+                {
+                    "domain": "education",
+                    "attribute": "current_studies",
+                    "description": "Pursuing studies in Generative AI and Humanities at Hong Kong Polytechnic University, currently located in Hong Kong."
+                },
+                {
+                    "domain": "hobbies",
+                    "attribute": "music",
+                    "description": "Plays guzheng and prefers instrumental music (e.g., Yanni's works). Also interested in learning dancing but concerned about coordination. Wants to write journals but struggles with layout design."
+                },
+                {
+                    "domain": "hobbies",
+                    "attribute": "sports",
+                    "description": "Practiced basketball for 2.5 years, interested in boxing for upper-body strength and cycling with friends in Guangdong province."
+                },
+                {
+                    "domain": "hobbies",
+                    "attribute": "entertainment",
+                    "description": "Dislikes open-world games due to lack of clear goals; new to gaming and seeking console recommendations. Enjoys anime (二次元) and sci-fi movies (e.g., The Matrix), classic films, suspense thrillers, and nature documentaries. Interested in writing movie reviews."
+                },
+                {
+                    "domain": "hobbies",
+                    "attribute": "creative",
+                    "description": "Curious about iPhone vs. DSLR photography effects and image processing with Python. Enjoys National Geographic magazine."
+                },
+                {
+                    "domain": "hobbies",
+                    "attribute": "aspirations",
+                    "description": "Wants to watch sunrises but struggles with early wake-ups."
+                },
+                {
+                    "domain": "psychology",
+                    "attribute": "lifestyle",
+                    "description": "Prefers being a night owl and values deep connections with body, nature, and others. Views cities as steel jungles disconnected from nature, favoring real forests."
+                },
+                {
+                    "domain": "psychology",
+                    "attribute": "media_engagement",
+                    "description": "Deeply moved by abstract metaphors in animated films but pauses when emotions become too intense. Finds some movies more meaningful upon rewatching and enjoys revisiting favorites while contemplating nostalgia."
+                },
+                {
+                    "domain": "psychology",
+                    "attribute": "sensory_preferences",
+                    "description": "Believes instrumental music has magical power to induce calm and deep states. Enjoys revisiting favorite music, food, and cities."
+                },
+                {
+                    "domain": "plan",
+                    "attribute": "travel",
+                    "description": "Plans to travel after graduation with interest in climbing Mount Fuji."
+                }
+            ]
+        },
+        "profile_summary": "A student at Hong Kong Polytechnic University studying Generative AI and Humanities, they enjoy guzheng, instrumental music, basketball, and boxing, while aspiring to learn dancing and write journals. They love anime, sci-fi films, and nature documentaries, dislike open-world games, and are curious about photography and Python image processing. A night owl who values deep connections, they plan to travel post-graduation, including climbing Mount Fuji.",
+        "status": "success",
+        "message": null
+    }
+}

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Graph Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        #container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+        .node {
+            cursor: pointer;
+        }
+        .link {
+            stroke: #999;
+            stroke-opacity: 0.6;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            font-size: 12px;
+            max-width: 300px;
+            visibility: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .tooltip p {
+            margin: 5px 0;
+        }
+        .legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            border-radius: 4px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .control-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: white;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        .file-path {
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .visualize-btn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .default-path-btn {
+            background-color: #2196F3;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .file-input {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="control-panel">
+        <h3>Knowledge Graph Visualization</h3>
+        <div class="file-input">
+            <label for="csv-file">Select CSV File:</label>
+            <input type="file" id="csv-file" accept=".csv">
+        </div>
+        <div>
+            <label for="file-path">Or Enter File Path:</label>
+            <input type="text" id="file-path" class="file-path" placeholder="../memory/1.csv">
+        </div>
+        <button id="visualize-btn" class="visualize-btn">Visualize Data</button>
+        <button id="default-path-btn" class="default-path-btn">Use Default Path</button>
+    </div>
+    
+    <div id="container">
+        <div class="tooltip"></div>
+        <div class="legend"></div>
+    </div>
+
+    <script>
+        // Set up the visualization dimensions
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        
+        // DOM elements
+        const fileInput = document.getElementById('csv-file');
+        const filePathInput = document.getElementById('file-path');
+        const visualizeBtn = document.getElementById('visualize-btn');
+        const defaultPathBtn = document.getElementById('default-path-btn');
+        const container = document.getElementById('container');
+        
+        // Set default path
+        filePathInput.value = "../memory/1.csv";
+        
+        // Clear existing visualization
+        function clearVisualization() {
+            container.querySelector('svg')?.remove();
+            document.querySelector('.legend').innerHTML = '';
+        }
+        
+        // Create visualization from data
+        function createVisualization(data) {
+            // Clear previous visualization if any
+            clearVisualization();
+            
+            // Create SVG container
+            const svg = d3.select("#container")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Color scale for domains
+            const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+            
+            // Tooltip element
+            const tooltip = d3.select(".tooltip");
+            
+            // Process the data
+            let domains = [...new Set(data.map(d => d.domain))];
+            
+            // Create legend
+            const legend = d3.select(".legend");
+            
+            domains.forEach((domain, i) => {
+                const item = legend.append("div")
+                    .attr("class", "legend-item");
+                
+                item.append("div")
+                    .attr("class", "legend-color")
+                    .style("background-color", colorScale(domain));
+                
+                item.append("span")
+                    .text(domain);
+            });
+
+            // Create a map of domains to center positions
+            const domainCenters = {};
+            const angleStep = (2 * Math.PI) / domains.length;
+            const radius = Math.min(width, height) * 0.3;
+            
+            domains.forEach((domain, i) => {
+                const angle = i * angleStep;
+                domainCenters[domain] = {
+                    x: width / 2 + radius * Math.cos(angle),
+                    y: height / 2 + radius * Math.sin(angle)
+                };
+            });
+
+            // Create force simulation
+            const simulation = d3.forceSimulation(data)
+                .force("charge", d3.forceManyBody().strength(-100))
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .force("x", d3.forceX().x(d => domainCenters[d.domain].x).strength(0.7))
+                .force("y", d3.forceY().y(d => domainCenters[d.domain].y).strength(0.7))
+                .force("collision", d3.forceCollide().radius(30));
+
+            // Create domain labels
+            svg.selectAll(".domain-label")
+                .data(domains)
+                .enter()
+                .append("text")
+                .attr("class", "domain-label")
+                .text(d => d)
+                .attr("x", d => domainCenters[d].x)
+                .attr("y", d => domainCenters[d].y - radius * 0.15)
+                .attr("text-anchor", "middle")
+                .attr("font-size", 16)
+                .attr("font-weight", "bold");
+
+            // Create nodes
+            const nodes = svg.selectAll(".node")
+                .data(data)
+                .enter()
+                .append("g")
+                .attr("class", "node")
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+            
+            // Add circles to nodes
+            nodes.append("circle")
+                .attr("r", 15)
+                .attr("fill", d => colorScale(d.domain))
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 1.5);
+                
+            // Add attribute labels
+            nodes.append("text")
+                .text(d => d.attribute)
+                .attr("text-anchor", "middle")
+                .attr("dy", 30)
+                .attr("font-size", 10);
+
+            // Add tooltip events
+            nodes.on("mouseover", function(event, d) {
+                tooltip.style("visibility", "visible")
+                    .html(`
+                        <p><strong>Domain:</strong> ${d.domain}</p>
+                        <p><strong>Attribute:</strong> ${d.attribute}</p>
+                        <p><strong>Description:</strong> ${d.description}</p>
+                        <p><strong>ID:</strong> ${d.id}</p>
+                        <p><strong>Created:</strong> ${d.created_at}</p>
+                        <p><strong>Updated:</strong> ${d.updated_at}</p>
+                    `)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY + 10) + "px");
+            })
+            .on("mousemove", function(event) {
+                tooltip.style("left", (event.pageX + 10) + "px")
+                       .style("top", (event.pageY + 10) + "px");
+            })
+            .on("mouseout", function() {
+                tooltip.style("visibility", "hidden");
+            });
+
+            // Update node positions on each tick of the simulation
+            simulation.on("tick", () => {
+                nodes.attr("transform", d => `translate(${d.x}, ${d.y})`);
+            });
+
+            // Functions for drag behavior
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+        }
+        
+        // Load data from file path
+        function loadFromPath(path) {
+            d3.csv(path)
+                .then(data => {
+                    createVisualization(data);
+                })
+                .catch(error => {
+                    console.error("Error loading CSV:", error);
+                    d3.select("#container").append("div")
+                        .style("color", "red")
+                        .style("padding", "20px")
+                        .text("Error loading data: " + error.message);
+                });
+        }
+        
+        // Load data from uploaded file
+        function loadFromFile(file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                const csvData = event.target.result;
+                const data = d3.csvParse(csvData);
+                createVisualization(data);
+            };
+            
+            reader.onerror = function() {
+                console.error("Error reading file");
+                d3.select("#container").append("div")
+                    .style("color", "red")
+                    .style("padding", "20px")
+                    .text("Error reading file");
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        // Visualize button click handler
+        visualizeBtn.addEventListener('click', function() {
+            clearVisualization();
+            
+            if (fileInput.files.length > 0) {
+                // Use uploaded file
+                loadFromFile(fileInput.files[0]);
+            } else if (filePathInput.value.trim() !== '') {
+                // Use path from input
+                loadFromPath(filePathInput.value.trim());
+            } else {
+                alert('Please select a file or enter a file path');
+            }
+        });
+        
+        // Default path button click handler
+        defaultPathBtn.addEventListener('click', function() {
+            filePathInput.value = "../memory/1.csv";
+            clearVisualization();
+            loadFromPath(filePathInput.value);
+        });
+    </script>
+</body>
+</html> 

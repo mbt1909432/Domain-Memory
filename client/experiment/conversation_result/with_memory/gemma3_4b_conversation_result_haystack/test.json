@@ -1,0 +1,22 @@
+[
+  {
+    "role": "system",
+    "content": "你是一个有帮助的AI助手。以下是关于用户的记忆信息：\n\n\neducation领域：\n- school: 香港理工大学\n- major: 生成式AI与人文\n- current_situation: studying in Hong Kong\n\ninterest领域：\n- sports: Has practiced basketball for 2.5 years and is interested in boxing and cycling\n- hobby: enjoys running in the morning, especially in a misty city atmosphere\n- activity: wants to watch sunrise but struggles with waking up early\n- activity: interested in trying rock climbing for sensory and mindfulness benefits\n- hobby: enjoys running in the morning (especially in misty city atmosphere) and is interested in dancing but concerned about coordination\n- magazines: likes National Geographic magazine\n- technology: interested in image processing with Python\n- movies: Likes sci-fi movies (e.g., The Matrix) and nature-related documentaries; prefers movies over TV shows, finding them more refined\n- music: Plays guzheng (古筝) and prefers instrumental music (e.g., Yanni's works) over songs\n\nplan领域：\n- travel: plans to travel after graduation, interested in climbing Mount Fuji\n\npsychological领域：\n- reflection: notices deeper appreciation for movies upon rewatching\n- expression: interested in writing movie reviews and sharing opinions\n- preference: deeply moved and healed by abstract metaphors in animated films\n- preferences: does not like open-world games due to lack of clear goals/incentives\n- status: self-identifies as a novice gamer\n- values: values connection (with body, nature, others, and the world)\n- beliefs: views cities as \"steel jungles\" that disconnect people from nature, prefers real forests\n- needs: seeks ways to relieve stress while studying abroad\n- emotional_response: pauses viewing when emotions become too intense\n- personality: self-identifies as a night owl (夜猫子) and believes instrumental music has power to induce calm and deep states\n- curiosity: Interested in why people enjoy revisiting favorite things (movies, music, food, cities) and whether music preferences reflect personality\n"
+  },
+  {
+    "role": "user",
+    "content": "[2025/03/26]我学习篮球多久了？"
+  },
+  {
+    "role": "assistant",
+    "content": "根据你的信息，你已经练习篮球 2.5 年了。\n"
+  },
+  {
+    "role": "user",
+    "content": "[2025/03/26] 我练习篮球多久了？"
+  },
+  {
+    "role": "assistant",
+    "content": "你已经练习篮球 2.5 年了。"
+  }
+]

@@ -1,0 +1,111 @@
+{
+    "code": 1,
+    "msg": "success",
+    "data": {
+        "extracted_profiles": {
+            "facts": [
+                {
+                    "domain": "interest",
+                    "attribute": "movies",
+                    "description": "喜欢看经典老电影"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "emotion",
+                    "description": "因情绪很强烈而暂停观看电影或电视剧"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "genre",
+                    "description": "喜欢悬疑惊悚片"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "documentaries",
+                    "description": "喜欢看自然相关的纪录片"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "magazines",
+                    "description": "喜欢国家地理杂志"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "music",
+                    "description": "更喜欢纯音乐"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "music_artist",
+                    "description": "喜欢Yanni的作品"
+                },
+                {
+                    "domain": "psychological",
+                    "attribute": "beliefs",
+                    "description": "觉得纯音乐有一种神奇的力量"
+                },
+                {
+                    "domain": "psychological",
+                    "attribute": "questions",
+                    "description": "对音乐的喜好类型能反映人的性格吗？"
+                },
+                {
+                    "domain": "psychological",
+                    "attribute": "motivations",
+                    "description": "觉得用python进行图像处理是一件很酷的事情"
+                }
+            ]
+        },
+        "updates": [
+            {
+                "action": "MERGE",
+                "description": "喜欢科幻电影，例如经典的黑客帝国，还喜欢看经典老电影，以及一些以前觉得无趣，现在看才觉得细腻隽永的电影。",
+                "domain": "interest",
+                "attribute": "movies"
+            },
+            {
+                "action": "MERGE",
+                "description": "觉得城市就是钢铁丛林 和 觉得纯音乐有一种神奇的力量",
+                "domain": "psychological",
+                "attribute": "beliefs"
+            }
+        ],
+        "organized_profiles": {
+            "facts": [
+                {
+                    "domain": "travel",
+                    "attribute": "future_plans",
+                    "description": "在毕业后计划去旅行，包括攀登富士山和与朋友一起骑行。"
+                },
+                {
+                    "domain": "basic_info",
+                    "attribute": "education",
+                    "description": "Attended 香港理工大学."
+                },
+                {
+                    "domain": "education",
+                    "attribute": "major",
+                    "description": "Studied Generative AI and Humanities while living in Hong Kong."
+                },
+                {
+                    "domain": "psychology",
+                    "attribute": "beliefs",
+                    "description": "Believes that cities are like steel jungles and that pure music has a magical power."
+                },
+                {
+                    "domain": "psychology",
+                    "attribute": "questions",
+                    "description": "Questions whether musical preferences can reflect a person's personality."
+                },
+                {
+                    "domain": "psychology",
+                    "attribute": "motivations",
+                    "description": "Finds it cool to perform image processing using Python."
+                }
+            ]
+        },
+        "profile_summary": "The user attended Hong Kong Polytechnic University, where they studied Generative AI and Humanities. After graduation, they plan to travel, including climbing Mount Fuji and cycling with friends. They have a belief that cities resemble steel jungles, think pure music has magical power, and are curious about the connection between musical preferences and personality.",
+        "status": "success",
+        "message": null
+    }
+}

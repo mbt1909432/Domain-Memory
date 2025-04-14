@@ -1,0 +1,148 @@
+{
+    "code": 1,
+    "msg": "success",
+    "data": {
+        "extracted_profiles": {
+            "facts": [
+                {
+                    "domain": "interest",
+                    "attribute": "movies",
+                    "description": "喜欢看经典老电影"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "movies",
+                    "description": "喜欢悬疑惊悚片"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "movies",
+                    "description": "喜欢看自然相关的纪录片"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "books",
+                    "description": "喜欢国家地理杂志"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "sports",
+                    "description": "练习篮球时长两年半"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "music",
+                    "description": "更喜欢纯音乐，而不是古典乐"
+                },
+                {
+                    "domain": "interest",
+                    "attribute": "music",
+                    "description": "喜欢Yanni的作品"
+                },
+                {
+                    "domain": "psychological",
+                    "attribute": "beliefs",
+                    "description": "觉得纯音乐有一种神奇的力量，能让人进入一种平静又深邃的状态"
+                },
+                {
+                    "domain": "psychological",
+                    "attribute": "values",
+                    "description": "认为对音乐的喜好类型能反映人的性格"
+                }
+            ]
+        },
+        "updates": [
+            {
+                "action": "MERGE",
+                "description": "喜欢科幻电影，例如经典的黑客帝国和经典老电影",
+                "domain": "interest",
+                "attribute": "movies"
+            },
+            {
+                "action": "MERGE",
+                "description": "喜欢科幻电影，例如经典的黑客帝国，并喜欢悬疑惊悚片",
+                "domain": "interest",
+                "attribute": "movies"
+            },
+            {
+                "action": "MERGE",
+                "description": "喜欢科幻电影，例如经典的黑客帝国，并喜欢看自然相关的纪录片",
+                "domain": "interest",
+                "attribute": "movies"
+            },
+            {
+                "action": "MERGE",
+                "description": "喜欢真正的森林和认为对音乐的喜好类型能反映人的性格",
+                "domain": "psychological",
+                "attribute": "values"
+            }
+        ],
+        "organized_profiles": {
+            "facts": [
+                {
+                    "domain": "interests",
+                    "attribute": "hobbies",
+                    "description": "Enjoys playing the guzheng and boxing, has a passion for movies, especially sci-fi classics like The Matrix, along with nature-related documentaries."
+                },
+                {
+                    "domain": "interests",
+                    "attribute": "gaming",
+                    "description": "Begins gaming as a novice player, preferring not to engage in open-world games."
+                },
+                {
+                    "domain": "interests",
+                    "attribute": "writing",
+                    "description": "Aspires to write a journal but finds layout design challenging; aims to share thoughts through movie reviews despite difficulties."
+                },
+                {
+                    "domain": "interests",
+                    "attribute": "nostalgia",
+                    "description": "Loves to revisit cherished things such as movies, music, food, and cities."
+                },
+                {
+                    "domain": "interests",
+                    "attribute": "music",
+                    "description": "Prefers instrumental music over classical, with a special liking for works by Yanni."
+                },
+                {
+                    "domain": "education",
+                    "attribute": "bachelor",
+                    "description": "Studied Generative AI and Humanities at Hong Kong Polytechnic University."
+                },
+                {
+                    "domain": "psychology",
+                    "attribute": "motivations",
+                    "description": "Values connection and enjoys the feeling of being linked with others."
+                },
+                {
+                    "domain": "psychology",
+                    "attribute": "values",
+                    "description": "Appreciates authentic forests and believes that musical preferences reflect personality traits."
+                },
+                {
+                    "domain": "psychology",
+                    "attribute": "beliefs",
+                    "description": "Feels that instrumental music possesses a magical power that evokes a calm and profound state."
+                },
+                {
+                    "domain": "work",
+                    "attribute": "industry",
+                    "description": "Studied in Hong Kong."
+                },
+                {
+                    "domain": "plan",
+                    "attribute": "travel",
+                    "description": "希望在毕业后进行旅行，特别想和朋友一起去骑行。"
+                },
+                {
+                    "domain": "opinion",
+                    "attribute": "movies_vs_tv",
+                    "description": "认为电影比电视剧精致很多。"
+                }
+            ]
+        },
+        "profile_summary": "The user enjoys playing the guzheng and boxing, has a passion for sci-fi films like The Matrix, and is interested in nature documentaries. They aspire to write movie reviews and a journal but find layout design challenging, while also valuing connections with others. With a degree in Generative AI and Humanities from Hong Kong Polytechnic University, they prefer instrumental music and hope to travel and cycle with friends after graduation.",
+        "status": "success",
+        "message": null
+    }
+}

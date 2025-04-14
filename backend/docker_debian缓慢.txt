@@ -1,0 +1,71 @@
+https://blog.csdn.net/u011561335/article/details/133685507
+
+
+# 替换 sources.list 为清华大学镜像源
+RUN echo "deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main contrib non-free non-free-firmware" > /etc/apt/sources.list && \
+    echo "deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    echo "deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    echo "deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    echo "deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-backports main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    echo "deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-backports main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    echo "deb https://mirrors.tuna.tsinghua.edu.cn/debian-security/ bookworm-security main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    echo "deb-src https://mirrors.tuna.tsinghua.edu.cn/debian-security/ bookworm-security main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    apt-get update && apt-get install -y \
+    # 基础编译工具链
+    gcc \
+    python3-dev \
+    # MySQL 开发库
+    default-libmysqlclient-dev \
+    # pkg-config 工具
+    pkg-config \
+    # MariaDB 兼容库
+    libmariadb-dev-compat \
+    # SSL 相关库
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+
+
+原本的
+#MySQL
+RUN apt-get update && apt-get install -y \
+    # 基础编译工具链
+    gcc \
+    python3-dev \
+    # MySQL 开发库
+    default-libmysqlclient-dev \
+    # pkg-config 工具
+    pkg-config \
+    # MariaDB 兼容库
+    libmariadb-dev-compat \
+    # SSL 相关库
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+
+https://wph.im/272.html
+
+
+#MySQL
+RUN echo "deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main contrib non-free non-free-firmware" > /etc/apt/sources.list && \
+    echo "deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    echo "deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    echo "deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    echo "deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-backports main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    echo "deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-backports main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    echo "deb https://mirrors.tuna.tsinghua.edu.cn/debian-security/ bookworm-security main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    echo "deb-src https://mirrors.tuna.tsinghua.edu.cn/debian-security/ bookworm-security main contrib non-free non-free-firmware" >> /etc/apt/sources.list && \
+    apt-get update && apt-get install -y \
+    # 基础编译工具链 \
+    libcrypt1 \
+    gcc \
+    python3-dev \
+    # MySQL 开发库
+    default-libmysqlclient-dev \
+    # pkg-config 工具
+    pkg-config \
+    # MariaDB 兼容库
+    libmariadb-dev-compat \
+    # SSL 相关库
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
